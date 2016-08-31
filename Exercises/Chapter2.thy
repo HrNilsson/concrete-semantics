@@ -34,24 +34,27 @@ You will need additional lemmas.
 
 lemma add_assoc: "add (add m n) p = add m (add n p)"
   apply(induction m)
-  apply(auto)
+  apply(simp)
+  apply simp
 done
 
 lemma add_zero[simp]: "add m 0 = m"
   apply(induction m)
-  apply auto
+  apply simp
+  apply simp
 done
 
 lemma add_succ[simp]: "add m (Suc n) = Suc(add m n)"
-  apply(induction m)
-  apply auto
+  apply(induction m arbitrary: n)
+  apply simp
+  apply simp
 done
 
 lemma add_comm: "add m n = add n m"
-  apply(induction m)
-  apply auto
+  apply(induction m arbitrary: n)
+  apply simp
+  apply simp
 done
-
 
 text{* Define a recursive function *}
 
@@ -252,7 +255,8 @@ Write a tail-recursive variant of the @{text add} function on @{typ nat}:
 *}
 
 fun itadd :: "nat \<Rightarrow> nat \<Rightarrow> nat" where
-(* your definition/proof here *)
+"itadd 0 n = n" |
+"itadd(Suc m) n = itadd m (Suc n)"
 
 text{*
 Tail-recursive means that in the recursive case, @{const itadd} needs to call
@@ -261,7 +265,10 @@ Prove
 *}
 
 lemma "itadd m n = add m n"
-(* your definition/proof here *)
+  apply(induction m arbitrary: n)
+  apply simp
+  apply simp
+done
 
 text{*
 \endexercise

@@ -12,7 +12,10 @@ To show that @{const asimp_const} really folds all subexpressions of the form
 *}
 
 fun optimal :: "aexp \<Rightarrow> bool" where
-(* your definition/proof here *)
+"optimal (N n) = True" |
+"optimal (V x) = True" |
+"optimal (Plus (N a) (N b)) = False" |
+"optimal (Plus a b) = ((optimal a) \<and> (optimal b))"
 
 text{*
 that checks that its argument does not contain a subexpression of the form
@@ -21,7 +24,12 @@ is optimal:
 *}
 
 lemma "optimal (asimp_const a)"
-(* your definition/proof here *)
+  apply (induction a)
+  apply (simp split: aexp.split)
+  apply (simp split: aexp.split)
+  apply (simp split: aexp.split)
+  apply (auto split: aexp.split)
+done
 
 text{*
 This proof needs the same @{text "split:"} directive as the correctness proof of
